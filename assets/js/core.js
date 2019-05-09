@@ -1,7 +1,7 @@
 /**
  *
  */
-let hexToRgba = function(hex, opacity) {
+let hexToRgba = function (hex, opacity) {
   let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   let rgb = result ? {
     r: parseInt(result[1], 16),
@@ -12,10 +12,33 @@ let hexToRgba = function(hex, opacity) {
   return 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + opacity + ')';
 };
 
+
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c
+      .length);
+  }
+  return null;
+}
+
 /**
  *
  */
-$(document).ready(function() {
+$(document).ready(function () {
   /** Constant div card */
   const DIV_CARD = 'div.card';
 
@@ -28,7 +51,7 @@ $(document).ready(function() {
   });
 
   /** Function for remove card */
-  $('[data-toggle="card-remove"]').on('click', function(e) {
+  $('[data-toggle="card-remove"]').on('click', function (e) {
     let $card = $(this).closest(DIV_CARD);
 
     $card.remove();
@@ -38,7 +61,7 @@ $(document).ready(function() {
   });
 
   /** Function for collapse card */
-  $('[data-toggle="card-collapse"]').on('click', function(e) {
+  $('[data-toggle="card-collapse"]').on('click', function (e) {
     let $card = $(this).closest(DIV_CARD);
 
     $card.toggleClass('card-collapsed');
@@ -48,7 +71,7 @@ $(document).ready(function() {
   });
 
   /** Function for fullscreen card */
-  $('[data-toggle="card-fullscreen"]').on('click', function(e) {
+  $('[data-toggle="card-fullscreen"]').on('click', function (e) {
     let $card = $(this).closest(DIV_CARD);
 
     $card.toggleClass('card-fullscreen').removeClass('card-collapsed');
@@ -59,7 +82,7 @@ $(document).ready(function() {
 
   /**  */
   if ($('[data-sparkline]').length) {
-    let generateSparkline = function($elem, data, params) {
+    let generateSparkline = function ($elem, data, params) {
       $elem.sparkline(data, {
         type: $elem.attr('data-sparkline-type'),
         height: '100%',
@@ -75,8 +98,8 @@ $(document).ready(function() {
       });
     };
 
-    require(['sparkline'], function() {
-      $('[data-sparkline]').each(function() {
+    require(['sparkline'], function () {
+      $('[data-sparkline]').each(function () {
         let $chart = $(this);
 
         generateSparkline($chart, JSON.parse($chart.attr('data-sparkline')), {
@@ -88,8 +111,8 @@ $(document).ready(function() {
 
   /**  */
   if ($('.chart-circle').length) {
-    require(['circle-progress'], function() {
-      $('.chart-circle').each(function() {
+    require(['circle-progress'], function () {
+      $('.chart-circle').each(function () {
         let $this = $(this);
 
         $this.circleProgress({

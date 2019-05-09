@@ -1,8 +1,9 @@
 require(["jquery"], function ($) {
     sc.include.headerMenu();
     sc.include.footer();
-    sc.changeTitle("fitby - Personel Trainer");
-    //sc.changeText("#schoolName", localStorage.getItem("sName"));
+    sc.changeTitle("Scoutive | Personal Trainer");
+    sc.changeText("#ptName", (localStorage.getItem("ptName") + " " + localStorage.getItem("ptSurname")));
+    sc.changeText("#ptAvatar", localStorage.getItem("ptName").charAt(0));
     //document.querySelectorAll("#schoolLogo")[0].style.backgroundImage = "url('" + localStorage.getItem("sLogo") + "')";
 
     /*$('#action-dropdown').on('show.bs.dropdown', function () {

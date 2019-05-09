@@ -3,6 +3,12 @@ sc.include = {};
 sc.request = {};
 sc.membership = {};
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500
+});
 
 /* ### MAIN FUNCTIONS ### */
 
@@ -68,6 +74,27 @@ sc.changeTitle = function (title) {
     } catch (e) {}
 }
 
+
+sc.changeText = function (elem, text) {
+    try {
+        document.querySelectorAll(elem)[0].innerHTML = text;
+    } catch (e) {}
+}
+
+sc.errorSwal = function (data, options) {
+    try {
+        return Swal.fire({
+            allowOutsideClick: false,
+            type: 'error',
+            title: 'Hata Kodu: ' + data.code,
+            text: data.description,
+            heightAuto: false,
+            confirmButtonText: 'Tamam',
+            ...options,
+        });
+    } catch (e) {}
+}
+
 /* ### MAIN FUNCTIONS ### */
 
 
@@ -76,7 +103,9 @@ sc.changeTitle = function (title) {
 sc.include.headerMenu = function () {
     try {
         sc.xhr(html.HEADER_MENU, "header-menu");
-    } catch (e) {console.log(e)}
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 sc.include.menu = function (active) {
@@ -95,3 +124,64 @@ sc.include.footer = function () {
 }
 
 /* ### INCLUDE HTML FUNCTIONS ### */
+
+
+/* ### SERVER SIDE REQUEST FUNCTIONS ### */
+
+
+sc.request.login = function (data, remember) {
+    try {
+        if (remember) {
+            localStorage.setItem("remember-info", data.email);
+        }
+        sc.fetch(ep.ACCOUNT_LOGIN, "POST", JSON.stringify(data)).then(function (response) {
+            console.log(response);
+            const status = response.status;
+            if (response.status || response.data) {
+                if (status !== 0) {
+                    //if (status.code !== 1020) {
+                    sc.errorSwal(status);
+                } else {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Giriş yapılıyor...'
+                    });
+                    var data = response.data;
+                    console.log(data);
+                    localStorage.setItem("ptName", data.name);
+                    localStorage.setItem("ptSurname", data.surname);
+                    localStorage.setItem("UID", data.uid);
+                    window.location.replace("/");
+                }
+            } else {
+                sc.errorSwal({
+                    code: 1050,
+                    description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
+                });
+            }
+            $("#loginButton").removeClass("btn-loading");
+            $("#username").attr("disabled", false);
+            $("#password").attr("disabled", false);
+        });
+    } catch (e) {}
+}
+
+sc.request.logout = function () {
+    try {
+        window.location.replace("../../../login.html");
+    } catch (e) {}
+}
+
+/* ### SERVER SIDE REQUEST FUNCTIONS ### */
+
+
+/* ### MEMBERSHIP FUNCTIONS ### */
+
+sc.membership.remember = function (elem) {
+    try {
+        var su = localStorage.getItem("remember-info");
+        $(elem).val(su);
+    } catch (e) {}
+}
+
+/* ### MEMBERSHIP FUNCTIONS ### */
