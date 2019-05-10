@@ -19,5 +19,7 @@ var html = {
 }
 
 var ep = {
+    "ACCOUNT_REGISTER": host + api_version + "create/trainer",
     "ACCOUNT_LOGIN": host + api_version + "login/trainer",
+    "LIST_STUDENT": host + api_version + "list/user",
 }

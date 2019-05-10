@@ -36,7 +36,7 @@
     <!-- c3.js Charts Plugin -->
     <script src="./assets/js/custom/master.js"></script>
     <script>
-        require(["jquery"], function ($) {
+        require(["jquery", "aes"], function ($) {
             sc.include.menu(0);
         });
     </script>
@@ -52,7 +52,7 @@
     <script src="./assets/plugins/datatables/plugin.js"></script>
 </head>
 
-<body class="">
+<body>
     <div class="page">
         <div class="flex-fill">
             <div id="header-menu"></div>
@@ -170,7 +170,8 @@
                                                             aria-labelledby="employee-action" x-placement="top-end">
                                                             <a class="dropdown-item action-pay-salary"
                                                                 href="javascript:void(0)">
-                                                                <i class="dropdown-icon fa fa-money-bill-wave"></i> Ödeme
+                                                                <i class="dropdown-icon fa fa-money-bill-wave"></i>
+                                                                Ödeme
                                                                 Al
                                                             </a>
                                                         </div>
@@ -197,6 +198,40 @@
                                                 targets: 'no-sort',
                                                 orderable: false,
                                             }],
+                                            ajax: {
+                                                url: ep.LIST_STUDENT,
+                                                type: "POST",
+                                                datatype: "json",
+                                                data: function (d) {
+                                                    return JSON.stringify({
+                                                        "uid": localStorage.getItem("UID")
+                                                    });
+                                                },
+                                                contentType: "application/json",
+                                                complete: function (res) {
+                                                    console.log(res.responseJSON)
+                                                    /*if (res.responseJSON.status.code !== 1020)
+                                                        sc.errorSwal(res.responseJSON.status, res
+                                                            .responseJSON.status.code === 1050 ? {
+                                                                footer: "<a href='javascript:location.reload()'>Yeniden dene...</a>"
+                                                            } : {}).then(function () {
+                                                            window.location.replace("/");
+                                                        });*/
+                                                }
+                                            },
+                                            columns: [{
+                                                "data": "name",
+                                            }, {
+                                                "data": "surname",
+                                            }, {
+                                                "data": "phone",
+                                            }, {
+                                                "data": "email",
+                                            }, {
+                                                "data": "started"
+                                            }, {
+                                                "data": "packet"
+                                            }]
                                         });
                                     });
                                 </script>

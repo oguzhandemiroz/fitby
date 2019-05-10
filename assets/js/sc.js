@@ -95,6 +95,33 @@ sc.errorSwal = function (data, options) {
     } catch (e) {}
 }
 
+sc.redirect = function (path, timeout, href) {
+    try {
+        path = window.location.origin + path;
+        if (!timeout)
+            timeout = 0;
+        setTimeout(function () {
+            if (href)
+                window.location.href = path;
+            else
+                window.location.replace(path);
+        }, timeout);
+    } catch (e) {}
+}
+
+sc.encrypt = function (string) {
+    try {
+        var encrypted = CryptoJS.AES.encrypt(string, "c2NvdXRpdmU=");
+        return encrypted.toString();
+    } catch (e) {}
+}
+
+sc.decrypt = function (value) {
+    try {
+        var decrypted = CryptoJS.AES.decrypt(value, "c2NvdXRpdmU=");
+        return decrypted.toString(CryptoJS.enc.Utf8);
+    } catch (e) {}
+}
 /* ### MAIN FUNCTIONS ### */
 
 
@@ -128,47 +155,140 @@ sc.include.footer = function () {
 
 /* ### SERVER SIDE REQUEST FUNCTIONS ### */
 
+sc.request.register = function (data) {
+    try {
+        console.log(data);
+        sc.fetch(ep.ACCOUNT_REGISTER, "POST", JSON.stringify(data))
+            .then(function (response) {
+                if (response.status.code !== 1020) {
+                    sc.errorSwal(response.status);
+                } else {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Hesabınız oluşturuldu...'
+                    });
+                    localStorage.setItem("remember-info", data.email);
+                    localStorage.setItem("trainer-email", data.email);
+                    localStorage.setItem("trainer-name", data.name);
+                    localStorage.setItem("trainer-surname", data.surname);
+                    localStorage.setItem("UID", response.uid);
+                    localStorage.setItem("s:key", sc.encrypt(data.password));
+                    sc.redirect("/", 1300, false);
+                }
+            }).catch(function (err) {
+                console.log(err);
+                sc.errorSwal({
+                    code: 1050,
+                    description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
+                });
+            });
+
+        $("#registerButton").removeClass("btn-loading");
+        $("#name").attr("disabled", false);
+        $("#surname").attr("disabled", false);
+        $("#email").attr("disabled", false);
+        $("#password").attr("disabled", false);
+        $("#terms").attr("disabled", false);
+    } catch (e) {
+        sc.errorSwal({
+            code: 1050,
+            description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
+        });
+    }
+}
 
 sc.request.login = function (data, remember) {
     try {
         if (remember) {
             localStorage.setItem("remember-info", data.email);
         }
-        sc.fetch(ep.ACCOUNT_LOGIN, "POST", JSON.stringify(data)).then(function (response) {
-            console.log(response);
-            const status = response.status;
-            if (response.status || response.data) {
-                if (status !== 0) {
-                    //if (status.code !== 1020) {
+        sc.fetch(ep.ACCOUNT_LOGIN, "POST", JSON.stringify(data))
+            .then(function (response) {
+                console.log(response);
+                const status = response.status;
+                if (status.code !== 1020) {
                     sc.errorSwal(status);
                 } else {
                     Toast.fire({
                         type: 'success',
                         title: 'Giriş yapılıyor...'
                     });
-                    var data = response.data;
-                    console.log(data);
-                    localStorage.setItem("ptName", data.name);
-                    localStorage.setItem("ptSurname", data.surname);
-                    localStorage.setItem("UID", data.uid);
-                    window.location.replace("/");
+                    var res = response.data;
+                    console.log(res);
+                    localStorage.setItem("trainer-email", data.email);
+                    localStorage.setItem("trainer-name", res.name);
+                    localStorage.setItem("trainer-surname", res.surname);
+                    localStorage.setItem("UID", res.uid);
+                    localStorage.setItem("s:key", sc.encrypt(data.password));
+                    sc.redirect("/", 1300, false);
                 }
-            } else {
+                $("#loginButton").removeClass("btn-loading");
+                $("#username").attr("disabled", false);
+                $("#password").attr("disabled", false);
+            }).catch(function (err) {
                 sc.errorSwal({
                     code: 1050,
                     description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
                 });
-            }
-            $("#loginButton").removeClass("btn-loading");
-            $("#username").attr("disabled", false);
-            $("#password").attr("disabled", false);
+            });
+    } catch (e) {
+        sc.errorSwal({
+            code: 1050,
+            description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
         });
-    } catch (e) {}
+    }
 }
 
 sc.request.logout = function () {
     try {
-        window.location.replace("../../../login.html");
+        localStorage.removeItem("trainer-email");
+        localStorage.removeItem("trainer-name");
+        localStorage.removeItem("trainer-surname");
+        localStorage.removeItem("UID");
+        localStorage.removeItem("s:key");
+        sc.redirect("/login.html", 0, false);
+    } catch (e) {}
+}
+
+sc.request.checkAccount = function () {
+    try {
+        if (localStorage.getItem("UID")) {
+            console.log(localStorage.getItem("UID"));
+            skey = localStorage.getItem("s:key");
+            var data = {
+                "email": localStorage.getItem("trainer-email"),
+                "password": sc.decrypt(skey),
+            }
+            sc.fetch(ep.ACCOUNT_LOGIN, "POST", JSON.stringify(data))
+                .then(function (response) {
+                    if (response.status.code === 1020) {
+                        localStorage.setItem("trainer-name", response.data.name);
+                        localStorage.setItem("trainer-surname", response.data.surname);
+                        localStorage.setItem("UID", response.data.uid);
+                        sc.changeText("#trainer-name", (localStorage.getItem("trainer-name") + " " + localStorage.getItem("trainer-surname")));
+                        sc.changeText("#trainer-avatar", localStorage.getItem("trainer-name").charAt(0));
+                    }
+                }).catch(function (e) {
+                    sc.errorSwal({
+                        code: 1050,
+                        description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
+                    });
+                });
+        } else {
+            $("body").addClass("d-none");
+            sc.redirect("/login.html", 0, false);
+        }
+    } catch (e) {
+        sc.errorSwal({
+            code: 1050,
+            description: "Kritik bir hata ile karşı karşıyayız. Üzerinde çalışıyoruz. Lütfen daha sonra tekrar deneyin..."
+        });
+    }
+}
+
+sc.request.getStudent = function () {
+    try {
+
     } catch (e) {}
 }
 

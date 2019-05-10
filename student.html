@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
 
 <head>
+    <script src="./assets/js/vendors/sweetalert2.all.min.js"></script>
     <script src="./assets/js/sc.js"></script>
     <script src="./assets/js/urls.js"></script>
     <meta charset="UTF-8">
@@ -16,8 +17,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-	<link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon.ico" />
+    <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon.ico" />
     <!-- Generated: 2019-04-04 16:55:45 +0200 -->
     <title>Scoutive | Personal Trainer</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -57,69 +58,300 @@
             <div id="header-menu"></div>
             <div id="menu"></div>
             <div class="my-3 my-md-5">
-            </div>
-        </div>
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-6 col-md-3">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#">First link</a></li>
-                                    <li><a href="#">Second link</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#">Third link</a></li>
-                                    <li><a href="#">Fourth link</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#">Fifth link</a></li>
-                                    <li><a href="#">Sixth link</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#">Other link</a></li>
-                                    <li><a href="#">Last link</a></li>
-                                </ul>
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title">
+                            Öğrenci Ekle
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-12 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Genel Bilgiler</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-auto m-auto">
+                                            <button type="button" class="avatar avatar-xxxl"
+                                                style="border:none; outline: none; font-size: .875rem;">Fotoğraf
+                                                ekle</span>
+                                                <input type="file" name="photo" id="photo" hidden>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Ad<span class="form-required">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Adı" name="name"
+                                            id="name" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Soyad<span class="form-required">*</span></label>
+                                        <input type="text" class="form-control state-invalid" placeholder="Soyadı"
+                                            name="surname" id="surname" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Telefon<span class="form-required">*</span></label>
+                                        <input type="text" class="form-control" name="phone" placeholder="Telefon"
+                                            id="phone">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Email<span class="form-required">*</span></label>
+                                        <input type="text" class="form-control" name="email" placeholder="Email"
+                                            id="email">
+                                    </div>
+                                </div>
+
+                                <!--<div class="card-footer text-right">
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <button type="submit" class="btn btn-primary ml-3">Bilgileri Doldur <i
+                                                class="fe fe-arrow-right"></i> </button>
+                                    </div>
+                                </div>-->
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 mt-4 mt-lg-0">
-                        Premium and Open Source dashboard template with responsive and high quality UI. For Free!
+                        <div class="col-lg-8 col-sm-12 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Detay Bilgiler</h3>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div class="row">
+
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Kan Grubu</label>
+                                                <select name="bloodType" id="bloodType"
+                                                    class="form-control custom-select">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Doğum Tarihi</label>
+                                                <div class="row gutters-xs">
+                                                    <div class="col-3">
+                                                        <select name="user[day]" class="form-control custom-select">
+                                                            <option selected="selected" value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                            <option value="13">13</option>
+                                                            <option value="14">14</option>
+                                                            <option value="15">15</option>
+                                                            <option value="16">16</option>
+                                                            <option value="17">17</option>
+                                                            <option value="18">18</option>
+                                                            <option value="19">19</option>
+                                                            <option value="20">20</option>
+                                                            <option value="21">21</option>
+                                                            <option value="22">22</option>
+                                                            <option value="23">23</option>
+                                                            <option value="24">24</option>
+                                                            <option value="25">25</option>
+                                                            <option value="26">26</option>
+                                                            <option value="27">27</option>
+                                                            <option value="28">28</option>
+                                                            <option value="29">29</option>
+                                                            <option value="30">30</option>
+                                                            <option value="31">31</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <select name="user[month]" class="form-control custom-select">
+                                                            <option selected="selected" value="1">Ocak</option>
+                                                            <option value="2">Şubat</option>
+                                                            <option value="3">Mart</option>
+                                                            <option value="4">Nisan</option>
+                                                            <option value="5">Mayıs</option>
+                                                            <option value="6">Haziran</option>
+                                                            <option value="7">Temmuz</option>
+                                                            <option value="8">Ağustos</option>
+                                                            <option value="9">Eylül</option>
+                                                            <option value="10">Ekim</option>
+                                                            <option value="11">Kasım</option>
+                                                            <option value="12">Aralık</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <select name="user[year]" class="form-control custom-select">
+                                                            <option value="2014">2014</option>
+                                                            <option value="2013">2013</option>
+                                                            <option value="2012">2012</option>
+                                                            <option value="2011">2011</option>
+                                                            <option value="2010">2010</option>
+                                                            <option value="2009">2009</option>
+                                                            <option value="2008">2008</option>
+                                                            <option value="2007">2007</option>
+                                                            <option value="2006">2006</option>
+                                                            <option value="2005">2005</option>
+                                                            <option value="2004">2004</option>
+                                                            <option value="2003">2003</option>
+                                                            <option value="2002">2002</option>
+                                                            <option value="2001">2001</option>
+                                                            <option selected="selected" value="2000">2000</option>
+                                                            <option value="1999">1999</option>
+                                                            <option value="1998">1998</option>
+                                                            <option value="1997">1997</option>
+                                                            <option value="1996">1996</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="form-label">Şehir</label>
+                                                <input type="text" name="city" id="city" class="form-control">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="form-label">İlçe</label>
+                                                <input type="text" name="state" id="state" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Meslek</label>
+                                                <input type="text" name="job" id="job" class="form-control">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="form-label">Cinsiyeti</label>
+                                                <div class="selectgroup w-100">
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="gender" value="0"
+                                                            class="selectgroup-input" checked="">
+                                                        <span class="selectgroup-button">Erkek</span>
+                                                    </label>
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="gender" value="1"
+                                                            class="selectgroup-input">
+                                                        <span class="selectgroup-button">Kadın</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="form-label">Eğitim Başlangıç Tarihi</label>
+                                                <div class="row gutters-xs">
+                                                    <div class="col-3">
+                                                        <select name="user[day]" class="form-control custom-select">
+                                                            <option selected="selected" value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                            <option value="13">13</option>
+                                                            <option value="14">14</option>
+                                                            <option value="15">15</option>
+                                                            <option value="16">16</option>
+                                                            <option value="17">17</option>
+                                                            <option value="18">18</option>
+                                                            <option value="19">19</option>
+                                                            <option value="20">20</option>
+                                                            <option value="21">21</option>
+                                                            <option value="22">22</option>
+                                                            <option value="23">23</option>
+                                                            <option value="24">24</option>
+                                                            <option value="25">25</option>
+                                                            <option value="26">26</option>
+                                                            <option value="27">27</option>
+                                                            <option value="28">28</option>
+                                                            <option value="29">29</option>
+                                                            <option value="30">30</option>
+                                                            <option value="31">31</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <select name="user[month]" class="form-control custom-select">
+                                                            <option selected="selected" value="1">Ocak</option>
+                                                            <option value="2">Şubat</option>
+                                                            <option value="3">Mart</option>
+                                                            <option value="4">Nisan</option>
+                                                            <option value="5">Mayıs</option>
+                                                            <option value="6">Haziran</option>
+                                                            <option value="7">Temmuz</option>
+                                                            <option value="8">Ağustos</option>
+                                                            <option value="9">Eylül</option>
+                                                            <option value="10">Ekim</option>
+                                                            <option value="11">Kasım</option>
+                                                            <option value="12">Aralık</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <select name="user[year]" class="form-control custom-select">
+                                                            <option value="2014">2014</option>
+                                                            <option value="2013">2013</option>
+                                                            <option value="2012">2012</option>
+                                                            <option value="2011">2011</option>
+                                                            <option value="2010">2010</option>
+                                                            <option value="2009">2009</option>
+                                                            <option value="2008">2008</option>
+                                                            <option value="2007">2007</option>
+                                                            <option value="2006">2006</option>
+                                                            <option value="2005">2005</option>
+                                                            <option value="2004">2004</option>
+                                                            <option value="2003">2003</option>
+                                                            <option value="2002">2002</option>
+                                                            <option value="2001">2001</option>
+                                                            <option selected="selected" value="2000">2000</option>
+                                                            <option value="1999">1999</option>
+                                                            <option value="1998">1998</option>
+                                                            <option value="1997">1997</option>
+                                                            <option value="1996">1996</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card-footer text-right">
+                                    <div class="d-flex" style="justify-content: space-between;">
+                                        <a href="javascript:void(0)" class="btn btn-link">İptal</a>
+                                        <div class="d-flex" style="align-items:center;">
+                                            <label class="custom-switch">
+                                                <input type="checkbox" name="custom-switch-checkbox"
+                                                    class="custom-switch-input">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="custom-switch-description">Sürekli ekle</span>
+                                            </label>
+                                            <button type="submit" class="btn btn-primary ml-3">Ekle ve
+                                                Bitir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <div class="row align-items-center flex-row-reverse">
-                    <div class="col-auto ml-lg-auto">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <ul class="list-inline list-inline-dots mb-0">
-                                    <li class="list-inline-item"><a href="./docs/index.html">Documentation</a></li>
-                                    <li class="list-inline-item"><a href="./faq.html">FAQ</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-auto">
-                                <a href="https://github.com/tabler/tabler" class="btn btn-outline-primary btn-sm">Source
-                                    code</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-                        Copyright © 2019 <a href=".">Tabler</a>. Theme by <a href="https://codecalm.net"
-                            target="_blank">codecalm.net</a> All rights reserved.
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <div id="footer"></div>
     </div>
 </body>
 

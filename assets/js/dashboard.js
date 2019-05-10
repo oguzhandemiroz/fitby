@@ -24,6 +24,7 @@ require.config({
         'validation': 'assets/js/vendors/jquery.validate.min',
         'moment': 'assets/js/vendors/moment',
         'daterangepicker': 'assets/js/vendors/daterangepicker.min',
+        'aes': 'assets/js/vendors/aes',
     }
 });
 window.tabler = {

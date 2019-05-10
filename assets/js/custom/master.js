@@ -1,9 +1,12 @@
 require(["jquery"], function ($) {
-    sc.include.headerMenu();
-    sc.include.footer();
-    sc.changeTitle("Scoutive | Personal Trainer");
-    sc.changeText("#ptName", (localStorage.getItem("ptName") + " " + localStorage.getItem("ptSurname")));
-    sc.changeText("#ptAvatar", localStorage.getItem("ptName").charAt(0));
+    try {
+        sc.include.headerMenu();
+        sc.include.footer();
+        sc.changeTitle("Scoutive | Personal Trainer");
+        sc.request.checkAccount();
+        sc.changeText("#trainer-name", (localStorage.getItem("trainer-name") + " " + localStorage.getItem("trainer-surname")));
+        sc.changeText("#trainer-avatar", localStorage.getItem("trainer-name").charAt(0));
+    } catch (e) {}
     //document.querySelectorAll("#schoolLogo")[0].style.backgroundImage = "url('" + localStorage.getItem("sLogo") + "')";
 
     /*$('#action-dropdown').on('show.bs.dropdown', function () {
